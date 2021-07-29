@@ -24,16 +24,4 @@
 		<nature>org.eclipse.cdt.core.ccnature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>spi/SDCard</name>
-			<type>2</type>
-			<location>C:/Users/reliance/Downloads/RM48_HDK_SD_Card/Library/SDCard</location>
-		</link>
-		<link>
-			<name>spi/fatfs</name>
-			<type>2</type>
-			<location>C:/Users/reliance/Downloads/RM48_HDK_SD_Card/Library/fatfs</location>
-		</link>
-	</linkedResources>
 </projectDescription>
