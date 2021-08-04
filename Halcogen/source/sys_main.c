@@ -48,7 +48,11 @@
 /* Include Files */
 
 #include "sys_common.h"
-
+#include "sci.h"
+#include "spi.h"
+#include "rti.h"
+#include "uartstdio.h"
+#include "sdc-hercules.h"
 /* USER CODE BEGIN (1) */
 /* USER CODE END */
 
@@ -59,16 +63,30 @@
 *   This function is called after startup.
 *   The user can use this function to implement the application.
 */
-
+int SD_Test(void);
 /* USER CODE BEGIN (2) */
 /* USER CODE END */
 
 int main(void)
 {
-/* USER CODE BEGIN (3) */
-/* USER CODE END */
+  sciInit(); // To Initalize LIN/SCI2 routines to receive commands and transmit data
+ //  spiInit(); // Use it  in Fatfs port
 
-    return 0;
+  UARTprintf("Futronics Limited");
+
+       rtiInit();
+      /* Enable RTI Compare 3 interrupt notification */
+      rtiEnableNotification(rtiNOTIFICATION_COMPARE3);
+      /* Enable IRQ - Clear I flag in CPS register */
+      _enable_IRQ();
+      /* Start RTI Counter Block 1 */
+      rtiStartCounter(rtiCOUNTER_BLOCK1);
+
+      mmcSelectSpi(spiPORT2, spiREG2);  // SD card is on the SPI2
+
+      SD_Test();
+
+      while(1);
 }
 
 
