@@ -19,7 +19,7 @@
 // DAMAGES, FOR ANY REASON WHATSOEVER.
 // 
 //*****************************************************************************
-
+#define TEST_FILENAME    "Futronics.TXT"
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
@@ -691,6 +691,8 @@ __error__(char *pcFilename, unsigned int ui32Line)
 #endif
 
 
+
+
 //*****************************************************************************
 //
 // The program main function.  It performs initialization, then runs a command
@@ -702,7 +704,6 @@ SD_Test(void)
 {
 	int nStatus;
     FRESULT iFResult;
-
     //
     // Mount the file system, using logical disk 0.
   //  iFResult = f_mount(&g_sFatFs, "", 1);
@@ -713,7 +714,45 @@ SD_Test(void)
         return(1);
     }
 
-    //
+    FRESULT res;                /* FatFs function common result code */
+
+    // write some info
+    FIL fsrc;                /* File objects */
+
+      /* Open  the file for append */
+      res = open_append(&fsrc, TEST_FILENAME);
+      if (res != FR_OK) {
+          /* Error. Cannot create the file */
+          while(1);
+      }
+
+      // if file empty, write header
+      if (! f_size(&fsrc)) {
+          res = f_printf(&fsrc, "temperature;humidity;uv\n");
+        if (res <0) {
+            /* Error. Cannot write header */
+            while(1);
+        }
+      }
+
+
+      res = f_printf(&fsrc, "%08u;%08u;%08u\n", 1, 2, 3);
+      if (res < FR_OK) {
+          /* Error. Cannot log data */
+          while(1);
+      }
+
+      /* Close the file */
+      res = f_close(&fsrc);
+      if (res != FR_OK)
+      {
+        /* Error. Cannot close the file */
+        while(1);
+      }
+
+
+
+
     // Enter an infinite loop for reading and processing commands from the
     // user.
     //
@@ -764,4 +803,25 @@ SD_Test(void)
     }
 }
 
+/*------------------------------------------------------------/
+/ Open or create a file in append mode
+/------------------------------------------------------------*/
+
+FRESULT open_append (
+    FIL* fp,            /* [OUT] File object to create */
+    const char* path    /* [IN]  File name to be opened */
+)
+{
+    FRESULT fr;
+
+    /* Opens an existing file. If not exist, creates a new file. */
+    fr = f_open(fp, path, FA_WRITE | FA_OPEN_ALWAYS);
+    if (fr == FR_OK) {
+        /* Seek to end of the file to append data */
+        fr = f_lseek(fp, f_size(fp));
+        if (fr != FR_OK)
+            f_close(fp);
+    }
+    return fr;
+}
 

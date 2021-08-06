@@ -46,7 +46,6 @@
 /* USER CODE END */
 
 /* Include Files */
-
 #include "sys_common.h"
 #include "sci.h"
 #include "spi.h"
@@ -54,6 +53,9 @@
 #include "uartstdio.h"
 #include "sdc-hercules.h"
 /* USER CODE BEGIN (1) */
+#include <string.h>
+#include <stdio.h>
+#define TEST_FILENAME    "Futronics.TXT"
 /* USER CODE END */
 
 /** @fn void main(void)
@@ -69,6 +71,8 @@ int SD_Test(void);
 
 int main(void)
 {
+
+
   sciInit(); // To Initalize LIN/SCI2 routines to receive commands and transmit data
  //  spiInit(); // Use it  in Fatfs port
 
@@ -79,7 +83,7 @@ int main(void)
       rtiEnableNotification(rtiNOTIFICATION_COMPARE3);
       /* Enable IRQ - Clear I flag in CPS register */
       _enable_IRQ();
-      /* Start RTI Counter Block 1 */
+      /* Start RTI Counter Block 2 */
       rtiStartCounter(rtiCOUNTER_BLOCK1);
 
       mmcSelectSpi(spiPORT2, spiREG2);  // SD card is on the SPI2
@@ -88,6 +92,7 @@ int main(void)
 
       while(1);
 }
+
 
 
 /* USER CODE BEGIN (4) */
