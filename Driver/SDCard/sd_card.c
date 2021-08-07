@@ -706,13 +706,15 @@ SD_Test(void)
     FRESULT iFResult;
     //
     // Mount the file system, using logical disk 0.
-  //  iFResult = f_mount(&g_sFatFs, "", 1);
-    iFResult = f_mount(0, &g_sFatFs);
+     iFResult = f_mount(&g_sFatFs, "", 1);
+   // iFResult = f_mount(0, &g_sFatFs);
     if(iFResult != FR_OK)
     {
     	UARTprintf("f_mount error: %s\n", StringFromFResult(iFResult));
         return(1);
     }
+
+    #define TEST_FILENAME    "FUtronics.TXT"
 
     FRESULT res;                /* FatFs function common result code */
 
