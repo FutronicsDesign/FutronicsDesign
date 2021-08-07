@@ -13,7 +13,8 @@
 #include "diskio.h"
 #include "sdc-hercules.h"
 #include <assert.h>
-
+#include "ffconf.h"     /* FatFs configuration options */
+#include "ff.h"
 
 /* Definitions for MMC/SDC command */
 #define CMD0    (0x40+0)    /* GO_IDLE_STATE */
@@ -550,7 +551,7 @@ DRESULT disk_read (
     BYTE drv,            /* Physical drive nmuber (0) */
     BYTE *buff,            /* Pointer to the data buffer to store read data */
     DWORD sector,        /* Start sector number (LBA) */
-    BYTE count            /* Sector count (1..255) */
+    UINT count            /* Sector count (1..255) */
 )
 {
     if (drv || !count) return RES_PARERR;
@@ -601,7 +602,7 @@ DRESULT disk_write (
     BYTE drv,            /* Physical drive nmuber (0) */
     const BYTE *buff,    /* Pointer to the data to be written */
     DWORD sector,        /* Start sector number (LBA) */
-    BYTE count            /* Sector count (1..255) */
+    UINT count            /* Sector count (1..255) */
 )
 {
     if (drv || !count) return RES_PARERR;
