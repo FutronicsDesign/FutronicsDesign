@@ -96,7 +96,7 @@ void rtiInit(void)
     *     - 0x00000000: Divide by 2^32
     *     - 0x00000001-0xFFFFFFFF: Divide by (CPUC0 + 1)
     */
-    rtiREG1->CNT[0U].CPUCx = 7U;
+    rtiREG1->CNT[0U].CPUCx = 2U;
 
     /** - Reset up counter 1 */
     rtiREG1->CNT[1U].UCx = 0x00000000U;
@@ -108,31 +108,31 @@ void rtiInit(void)
     *     - 0x00000000: Divide by 2^32
     *     - 0x00000001-0xFFFFFFFF: Divide by (CPUC1 + 1)
     */
-    rtiREG1->CNT[1U].CPUCx = 7U;
+    rtiREG1->CNT[1U].CPUCx = 2U;
 
     /** - Setup compare 0 value. This value is compared with selected free running counter. */
-    rtiREG1->CMP[0U].COMPx = 10000U;
+    rtiREG1->CMP[0U].COMPx = 8889U;
 
     /** - Setup update compare 0 value. This value is added to the compare 0 value on each compare match. */
-    rtiREG1->CMP[0U].UDCPx = 10000U;
+    rtiREG1->CMP[0U].UDCPx = 8889U;
 
     /** - Setup compare 1 value. This value is compared with selected free running counter. */
-    rtiREG1->CMP[1U].COMPx = 50000U;
+    rtiREG1->CMP[1U].COMPx = 44445U;
 
     /** - Setup update compare 1 value. This value is added to the compare 1 value on each compare match. */
-    rtiREG1->CMP[1U].UDCPx = 50000U;
+    rtiREG1->CMP[1U].UDCPx = 44445U;
 
     /** - Setup compare 2 value. This value is compared with selected free running counter. */
-    rtiREG1->CMP[2U].COMPx = 80000U;
+    rtiREG1->CMP[2U].COMPx = 71112U;
 
     /** - Setup update compare 2 value. This value is added to the compare 2 value on each compare match. */
-    rtiREG1->CMP[2U].UDCPx = 80000U;
+    rtiREG1->CMP[2U].UDCPx = 71112U;
 
     /** - Setup compare 3 value. This value is compared with selected free running counter. */
-    rtiREG1->CMP[3U].COMPx = 100000U;
+    rtiREG1->CMP[3U].COMPx = 88890U;
 
     /** - Setup update compare 3 value. This value is added to the compare 3 value on each compare match. */
-    rtiREG1->CMP[3U].UDCPx = 100000U;
+    rtiREG1->CMP[3U].UDCPx = 88890U;
 
     /** - Clear all pending interrupts */
     rtiREG1->INTFLAG = 0x0007000FU;
@@ -843,6 +843,33 @@ void rtiGetConfigValue(rti_config_reg_t *config_reg, config_value_type_t type)
 
 
 
+
+/* USER CODE BEGIN (82) */
+/* USER CODE END */
+
+/** @fn void rtiCompare3Interrupt(void)
+*   @brief RTI1 Compare 3 Interrupt Handler
+*
+*   RTI1 Compare 3 interrupt handler 
+*
+*/
+#pragma CODE_STATE(rtiCompare3Interrupt, 32)
+#pragma INTERRUPT(rtiCompare3Interrupt, IRQ)
+
+/* SourceId : RTI_SourceId_025 */
+/* DesignId : RTI_DesignId_022 */
+/* Requirements : HL_SR95 */
+void rtiCompare3Interrupt(void)
+{
+/* USER CODE BEGIN (83) */
+/* USER CODE END */
+
+    rtiREG1->INTFLAG = 8U;
+    rtiNotification(rtiNOTIFICATION_COMPARE3);
+
+/* USER CODE BEGIN (84) */
+/* USER CODE END */
+}
 
 
 

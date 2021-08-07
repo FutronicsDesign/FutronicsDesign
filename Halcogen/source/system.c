@@ -294,7 +294,7 @@ void mapClocks(void)
     systemREG1->CLKCNTL  = (systemREG1->CLKCNTL & 0xF0FFFFFFU)
                          | (uint32)((uint32)0U << 24U);
     systemREG1->CLKCNTL  = (systemREG1->CLKCNTL & 0xFFF0FFFFU)
-                         | (uint32)((uint32)0U << 16U);
+                         | (uint32)((uint32)2U << 16U);
 
 /* USER CODE BEGIN (13) */
 /* USER CODE END */

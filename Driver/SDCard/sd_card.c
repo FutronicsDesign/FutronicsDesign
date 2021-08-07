@@ -714,8 +714,6 @@ SD_Test(void)
         return(1);
     }
 
-    #define TEST_FILENAME    "FUtronics.TXT"
-
     FRESULT res;                /* FatFs function common result code */
 
     // write some info
@@ -751,8 +749,6 @@ SD_Test(void)
         /* Error. Cannot close the file */
         while(1);
       }
-
-
 
 
     // Enter an infinite loop for reading and processing commands from the

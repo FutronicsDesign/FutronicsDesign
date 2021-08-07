@@ -74,7 +74,7 @@ static const t_isrFuncPTR s_vim_init[96U] =
     &phantomInterrupt,            /* Channel 2 */
     &phantomInterrupt,            /* Channel 3 */
     &phantomInterrupt,            /* Channel 4 */
-    &phantomInterrupt,            /* Channel 5 */
+    &rtiCompare3Interrupt,            /* Channel 5 */
     &phantomInterrupt,            /* Channel 6 */
     &phantomInterrupt,            /* Channel 7 */
     &phantomInterrupt,            /* Channel 8 */
@@ -336,7 +336,7 @@ void vimInit(void)
                         | (uint32)((uint32)0U << 2U)
                         | (uint32)((uint32)0U << 3U)
                         | (uint32)((uint32)0U << 4U)
-                        | (uint32)((uint32)0U << 5U)
+                        | (uint32)((uint32)1U << 5U)
                         | (uint32)((uint32)0U << 6U)
                         | (uint32)((uint32)0U << 7U)
                         | (uint32)((uint32)0U << 8U)
