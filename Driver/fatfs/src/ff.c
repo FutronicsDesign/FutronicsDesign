@@ -2266,7 +2266,7 @@ FRESULT validate (	/* FR_OK(0): The object is valid, !=0: Invalid */
 /*-----------------------------------------------------------------------*/
 
 FRESULT f_mount (
-    FATFS *fs,   /* Pointer to new file system object (NULL for unmount)*/
+    FATFS* fs,   /* Pointer to new file system object (NULL for unmount)*/
 	const TCHAR* path,
 	BYTE vol       /* Logical drive number to be mounted/unmounted */
 
