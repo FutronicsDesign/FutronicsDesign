@@ -83,10 +83,10 @@ int main(void)
       rtiEnableNotification(rtiNOTIFICATION_COMPARE3);
       /* Enable IRQ - Clear I flag in CPS register */
       _enable_IRQ();
-      /* Start RTI Counter Block 2 */
+      /* Start RTI Counter Block 1 */
       rtiStartCounter(rtiCOUNTER_BLOCK1);
 
-      mmcSelectSpi(spiPORT2, spiREG2);  // SD card is on the SPI2
+      mmcSelectSpi(spiPORT1, spiREG1);  // SD card is on the SPI1
 
       SD_Test();
 
