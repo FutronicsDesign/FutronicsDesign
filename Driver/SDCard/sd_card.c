@@ -305,7 +305,7 @@ Cmd_ls(int argc, char *argv[])
     //
     // Display the amount of free space that was calculated.
     //
-  //  UARTprintf(", %10uK bytes free\n", (ui32TotalSize * psFatFs->free_clust / 2));
+    UARTprintf(", %10uK bytes free\n", (ui32TotalSize * psFatFs->free_clst / 2));
 
     //
     // Made it to here, return with no errors.
