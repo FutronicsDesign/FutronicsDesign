@@ -610,6 +610,78 @@ Cmd_cat(int argc, char *argv[])
     return(0);
 }
 
+int
+Cmd_append(int argc, char *argv[])
+{
+    FRESULT iFResult;
+    unsigned int ui32BytesRead;
+
+    //
+    // First, check to make sure that the current path (CWD), plus the file
+    // name, plus a separator and trailing null, will all fit in the temporary
+    // buffer that will be used to hold the file name.  The file name must be
+    // fully specified, with path, to FatFs.
+    //
+    if(strlen(g_pcCwdBuf) + strlen(argv[1]) + 1 + 1 > sizeof(g_pcTmpBuf))
+    {
+        UARTprintf("Resulting path name is too long\n");
+        return(0);
+    }
+
+    //
+    // Copy the current path to the temporary buffer so it can be manipulated.
+    //
+    strcpy(g_pcTmpBuf, g_pcCwdBuf);
+
+    //
+    // If not already at the root level, then append a separator.
+    //
+    if(strcmp("/", g_pcCwdBuf))
+    {
+        strcat(g_pcTmpBuf, "/");
+    }
+
+    //
+    // Now finally, append the file name to result in a fully specified file.
+    //
+    strcat(g_pcTmpBuf, argv[1]);
+
+    FIL fsrc;
+    /* Open  the file for append */
+
+
+    iFResult = open_append(&fsrc, g_pcTmpBuf);
+    /*iFResult = f_open(&fsrc, g_pcTmpBuf, FA_WRITE | FA_OPEN_ALWAYS);
+    iFResult = f_truncate(&fsrc);*/ // Replace above line with this if you don't want to append
+    if (iFResult != FR_OK) {
+        /* Error. Cannot create the file */
+    	UARTprintf("Error opening file\n");
+        while(1);
+    }
+
+	  UARTprintf("Writing ");
+	  UARTprintf(argv[2]);
+	  UARTprintf("\n");
+   	  int res = f_printf(&fsrc, argv[2]);
+      if (res <0) {
+          /* Error. Cannot write header */
+    	  UARTprintf("Cannot write\n");
+          while(1);
+      }
+
+      /* Close the file */
+      res = f_close(&fsrc);
+      if (res != FR_OK)
+      {
+        /* Error. Cannot close the file */
+        while(1);
+      }
+    //
+    // Return success.
+    //
+    return(0);
+}
+
 //*****************************************************************************
 //
 // This function implements the "help" command.  It prints a simple list of the
@@ -671,6 +743,7 @@ tCmdLineEntry g_psCmdTable[] =
     { "cd",     Cmd_cd,     "alias for chdir" },
     { "pwd",    Cmd_pwd,    "Show current working directory" },
     { "cat",    Cmd_cat,    "Show contents of a text file" },
+	{ "append", Cmd_append, "Append string to text file" },
 #ifdef LCD
     { "load",   Cmd_load,   "Load a bmp file" },                      // Load_bmp.c
 #endif
@@ -689,8 +762,23 @@ __error__(char *pcFilename, unsigned int ui32Line)
 }
 #endif
 
+FRESULT open_append (
+    FIL* fp,            /* [OUT] File object to create */
+    const char* path    /* [IN]  File name to be opened */
+)
+{
+    FRESULT fr;
 
-
+    /* Opens an existing file. If not exist, creates a new file. */
+    fr = f_open(fp, path, FA_WRITE | FA_OPEN_ALWAYS);
+    if (fr == FR_OK) {
+        /* Seek to end of the file to append data */
+        fr = f_lseek(fp, f_size(fp));
+        if (fr != FR_OK)
+            f_close(fp);
+    }
+    return fr;
+}
 
 //*****************************************************************************
 //
@@ -800,25 +888,5 @@ SD_Test(void)
     }
 }
 
-/*------------------------------------------------------------/
-/ Open or create a file in append mode
-/------------------------------------------------------------*/
 
-FRESULT open_append (
-    FIL* fp,            /* [OUT] File object to create */
-    const char* path    /* [IN]  File name to be opened */
-)
-{
-    FRESULT fr;
-
-    /* Opens an existing file. If not exist, creates a new file. */
-    fr = f_open(fp, path, FA_WRITE | FA_OPEN_ALWAYS);
-    if (fr == FR_OK) {
-        /* Seek to end of the file to append data */
-        fr = f_lseek(fp, f_size(fp));
-        if (fr != FR_OK)
-            f_close(fp);
-    }
-    return fr;
-}
 
