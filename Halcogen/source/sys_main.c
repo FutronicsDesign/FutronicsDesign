@@ -97,15 +97,15 @@ FRESULT fr;
 
       SD_Test();
 
-      f_mount(&Fatfs, "", 3);     /* Give a work area to the default drive */
+//      f_mount(&Fatfs, "", 3);     /* Give a work area to the default drive */
 
-      fr = f_open(&fil, "xyz.txt", FA_WRITE | FA_CREATE_ALWAYS);  /* Create a file */
+ //     fr = f_open(&fil, "xyz.txt", FA_WRITE | FA_CREATE_ALWAYS);  /* Create a file */
 
-      if (fr == FR_OK) {
-            f_write(&fil, "It works!\r\n", 11, &bw);    /* Write data to the file */
-            fr = f_close(&fil);                         /* Close the file */
+//      if (fr == FR_OK) {
+//            f_write(&fil, "It works!\r\n", 11, &bw);    /* Write data to the file */
+//            fr = f_close(&fil);                         /* Close the file */
 
-            }
+//            }
 
       while(1);
 
