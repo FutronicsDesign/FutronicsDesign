@@ -214,7 +214,7 @@ void spiInit(void)
                     | (uint32)((uint32)0U << 11U); /* SOMI[0] */
 
     /* SPI1 set all pins to functional */
-    spiREG1->PC0  =   (uint32)((uint32)1U << 0U)  /* SCS[0] */
+    spiREG1->PC0  =   (uint32)((uint32)0U << 0U)  /* SCS[0] */
                     | (uint32)((uint32)1U << 1U)  /* SCS[1] */
                     | (uint32)((uint32)1U << 2U)  /* SCS[2] */
                     | (uint32)((uint32)1U << 3U)  /* SCS[3] */

@@ -55,7 +55,6 @@
 /* USER CODE BEGIN (1) */
 #include <string.h>
 #include <stdio.h>
-#define TEST_FILENAME    "Futronics.TXT"
 #include "ff.h"
 /* USER CODE END */
 
