@@ -56,7 +56,11 @@
 #include <string.h>
 #include <stdio.h>
 #define TEST_FILENAME    "Futronics.TXT"
+#include "ff.h"
 /* USER CODE END */
+
+FATFS Fatfs;
+FIL fil;
 
 /** @fn void main(void)
 *   @brief Application main function
@@ -72,11 +76,14 @@ int SD_Test(void);
 int main(void)
 {
 
+UINT bw;
+FRESULT fr;
 
-  sciInit(); // To Initalize LIN/SCI2 routines to receive commands and transmit data
- //  spiInit(); // Use it  in Fatfs port
 
-  UARTprintf("Futronics Limited");
+      sciInit(); // To Initalize LIN/SCI2 routines to receive commands and transmit data
+      //  spiInit(); // Use it  in Fatfs port
+
+      UARTprintf("Futronics Limited");
 
        rtiInit();
       /* Enable RTI Compare 3 interrupt notification */
@@ -90,7 +97,18 @@ int main(void)
 
       SD_Test();
 
+      f_mount(&Fatfs, "", 3);     /* Give a work area to the default drive */
+
+      fr = f_open(&fil, "xyz.txt", FA_WRITE | FA_CREATE_ALWAYS);  /* Create a file */
+
+      if (fr == FR_OK) {
+            f_write(&fil, "It works!\r\n", 11, &bw);    /* Write data to the file */
+            fr = f_close(&fil);                         /* Close the file */
+
+            }
+
       while(1);
+
 }
 
 
