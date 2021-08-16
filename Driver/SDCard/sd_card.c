@@ -822,8 +822,9 @@ SD_Test(void)
         }
       }
 
-
+    while(1){
       res = f_printf(&fsrc, "%08u;%08u;%08u\n", 1, 2, 3);
+    }
       if (res < FR_OK) {
           /* Error. Cannot log data */
           while(1);
@@ -841,51 +842,51 @@ SD_Test(void)
     // Enter an infinite loop for reading and processing commands from the
     // user.
     //
-    while(1)
-    {
+  //  while(1)
+  //  {
         //
         // Print a prompt to the console.  Show the CWD.
         //
-        UARTprintf("\n%s> ", g_pcCwdBuf);
+ //       UARTprintf("\n%s> ", g_pcCwdBuf);
 
         //
         // Get a line of text from the user.
         //
-        UARTgets(g_pcCmdBuf, sizeof(g_pcCmdBuf));
+ //       UARTgets(g_pcCmdBuf, sizeof(g_pcCmdBuf));
 //        sciReceive(sciREG1, sizeof(g_pcCmdBuf), g_pcCmdBuf);
         //
         // Pass the line from the user to the command processor.  It will be
         // parsed and valid commands executed.
         //
 
-        nStatus = CmdLineProcess(g_pcCmdBuf);
+//        nStatus = CmdLineProcess(g_pcCmdBuf);
 
         //
         // Handle the case of bad command.
         //
-        if(nStatus == CMDLINE_BAD_CMD)
-        {
-            UARTprintf("Bad command!\n");
-        }
+  //      if(nStatus == CMDLINE_BAD_CMD)
+  //      {
+ //           UARTprintf("Bad command!\n");
+  //      }
 
         //
         // Handle the case of too many arguments.
         //
-        else if(nStatus == CMDLINE_TOO_MANY_ARGS)
-        {
-            UARTprintf("Too many arguments for command processor!\n");
-        }
+ //       else if(nStatus == CMDLINE_TOO_MANY_ARGS)
+ //       {
+  //          UARTprintf("Too many arguments for command processor!\n");
+ //       }
 
         //
         // Otherwise the command was executed.  Print the error code if one was
         // returned.
         //
-        else if(nStatus != 0)
-        {
-            UARTprintf("Command returned error code %s\n",
-                        StringFromFResult((FRESULT)nStatus));
-        }
-    }
+ //       else if(nStatus != 0)
+ //       {
+ //           UARTprintf("Command returned error code %s\n",
+ //                       StringFromFResult((FRESULT)nStatus));
+//        }
+//    }
 }
 
 
