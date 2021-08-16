@@ -793,7 +793,7 @@ SD_Test(void)
     FRESULT iFResult;
     //
     // Mount the file system, using logical disk 0.
-     iFResult = f_mount(&g_sFatFs, "0:Futronics.TXT", FS_FAT32);
+     iFResult = f_mount(&g_sFatFs, "0:Futro.TXT", FS_FAT32);
    // iFResult = f_mount(0, &g_sFatFs);
     if(iFResult != FR_OK)
     {
