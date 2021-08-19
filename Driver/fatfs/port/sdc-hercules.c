@@ -415,7 +415,7 @@ BYTE send_cmd12 (void)
     /* For CMD12, we don't wait for the card to be idle before we send
     * the new command.
     */
-
+  //  UARTprintf(res);
 
     /* Send command packet - the argument for CMD12 is ignored. */
     xmit_spi(CMD12);
@@ -718,12 +718,14 @@ DRESULT disk_ioctl (
         case GET_SECTOR_SIZE :    /* Get sectors on the disk (WORD) */
             *(WORD*)buff = 512;
             res = RES_OK;
+          //  UARTprintf(res);
             break;
 
 
         case CTRL_SYNC :    /* Make sure that data has been written */
             if (wait_ready() == 0xFF)
                 res = RES_OK;
+       //     UARTprintf(res);
             break;
 
 
@@ -731,6 +733,7 @@ DRESULT disk_ioctl (
             if (send_cmd(CMD9, 0) == 0        /* READ_CSD */
                 && rcvr_datablock(ptr, 16))
                 res = RES_OK;
+       //     UARTprintf(res);
             break;
 
 
@@ -738,6 +741,7 @@ DRESULT disk_ioctl (
             if (send_cmd(CMD10, 0) == 0        /* READ_CID */
                 && rcvr_datablock(ptr, 16))
                 res = RES_OK;
+      //      UARTprintf(res);
             break;
 
 
@@ -745,6 +749,7 @@ DRESULT disk_ioctl (
             if (send_cmd(CMD58, 0) == 0) {    /* READ_OCR */
                 for (n = 0; n < 4; n++)
                     *ptr++ = rcvr_spi();
+      //          UARTprintf(res);
                 res = RES_OK;
             }
 
@@ -757,6 +762,7 @@ DRESULT disk_ioctl (
 
         default:
             res = RES_PARERR;
+       //     UARTprintf(res);
         }
 
 
