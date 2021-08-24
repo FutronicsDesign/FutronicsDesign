@@ -57,7 +57,7 @@
 #include <stdio.h>
 #include "ff.h"
 /* USER CODE END */
-
+#include "diskio.h"
 FATFS Fatfs;
 FIL fil;
 
@@ -68,6 +68,7 @@ FIL fil;
 *   This function is called after startup.
 *   The user can use this function to implement the application.
 */
+
 #pragma SET_DATA_SECTION("SD_RDATA_SECTION")
 int SD_Test(void);
 /* USER CODE BEGIN (2) */
@@ -95,8 +96,10 @@ FRESULT fr;
       /* Start RTI Counter Block 1 */
       rtiStartCounter(rtiCOUNTER_BLOCK1);
 
-      mmcSelectSpi(spiPORT1, spiREG1);  // SD card is on the SPI1
+   //   _cacheDisable_();
 
+   //   mmcSelectSpi(spiPORT1, spiREG1);  // SD card is on the SPI1
+        mmcSelectSpi(spiPORT2, spiREG2);  // SD card is on the SPI2
    //   SD_Test();
 
       f_mount(&Fatfs, "", 3);     /* Give a work area to the default drive */
