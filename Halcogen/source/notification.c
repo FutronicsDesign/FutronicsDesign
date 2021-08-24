@@ -108,6 +108,10 @@ void rtiNotification(uint32 notification)
 {
 /*  enter user code between the USER CODE BEGIN and USER CODE END. */
 /* USER CODE BEGIN (9) */
+    if(notification == rtiNOTIFICATION_COMPARE3){
+        SysTickHandler();
+    }
+
 /* USER CODE END */
 }
 
