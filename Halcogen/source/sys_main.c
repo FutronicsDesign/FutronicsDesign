@@ -68,6 +68,7 @@ FIL fil;
 *   This function is called after startup.
 *   The user can use this function to implement the application.
 */
+#pragma SET_DATA_SECTION("SD_RDATA_SECTION")
 int SD_Test(void);
 /* USER CODE BEGIN (2) */
 /* USER CODE END */
@@ -88,6 +89,8 @@ FRESULT fr;
       /* Enable RTI Compare 3 interrupt notification */
       rtiEnableNotification(rtiNOTIFICATION_COMPARE3);
       /* Enable IRQ - Clear I flag in CPS register */
+
+
       _enable_IRQ();
       /* Start RTI Counter Block 1 */
       rtiStartCounter(rtiCOUNTER_BLOCK1);
