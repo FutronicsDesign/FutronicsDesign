@@ -47,6 +47,9 @@
 
 /* Include Files */
 #include "sys_common.h"
+#include "system.h"
+#include <math.h>
+#include <stdbool.h>
 #include "sci.h"
 #include "spi.h"
 #include "rti.h"
@@ -68,11 +71,55 @@ FIL fil;
 *   This function is called after startup.
 *   The user can use this function to implement the application.
 */
+//void showdata4(struct cell c,float vPack,float iPack,float zAvg,float TempPack, float PCap);
+//void showdata4(struct cell c[],float vPack,float iPack,float zAvg,float TempPack, float PCap);
+//*Number of cells connected in Series & Parallel and Temp. Sensors
+#define noSCell 8
+#define noPCell 7
+#define noTemp 8
+
+struct cell{
+    float voltage;
+    float current;
+    float z;
+    float temp;
+    float Capacity;
+};
+struct cell c[8];
+
+float zAvg= 1.0 ;
+float vPack=2.0;
+float iPack=3.0;
+float iref;
+float TempPack=4.0;
+float PCap;
+float zMin;
+int i,m;
 
 #pragma SET_DATA_SECTION("SD_RDATA_SECTION")
 int SD_Test(void);
 /* USER CODE BEGIN (2) */
 /* USER CODE END */
+
+
+void showdata4(struct cell c[],float vPack, float iPack, float zAvg, float TempPack, float PCap){
+                      int i;
+             //     printf("%f\t%f\t%f\t%f\t%f\t",zAvg*100,vPack,iPack,TempPack,PCap);
+                   f_printf(&fil,"%f\t%f\t%f\t%f\t",zAvg*100,vPack,iPack,TempPack);
+                //   printf("\t");
+                  for(i = 0; i < noSCell; i++){
+                       f_printf(&fil,"%f\t",c[i].voltage);// c is structure voltage data
+                       }
+                //   printf("\t\t");
+                   for(i = 0; i < noSCell; i++){
+                     f_printf(&fil,"%f\t",c[i].z*100);
+                     }
+                //   printf("\t\t");
+                    for(i = 0; i < noTemp; i++){
+                        f_printf(&fil,"%f\t ",c[i].temp);
+                   }
+              }
+
 
 int main(void)
 {
@@ -105,12 +152,68 @@ FRESULT fr;
       f_mount(&Fatfs, "", 3);     /* Give a work area to the default drive */
 
       fr = f_open(&fil, "xyz.txt", FA_WRITE | FA_CREATE_ALWAYS);  /* Create a file */
+      fr = open_append(&fil, "xyz.txt");
 
-      if (fr == FR_OK) {
-            f_write(&fil, "It works!\r\n", 11, &bw);    /* Write data to the file */
-            fr = f_close(&fil);                         /* Close the file */
 
+      if (fr != FR_OK) {
+        //    f_write(&fil, "It works!\r\n", 11, &bw);    /* Write data to the file */
+         //   fr = f_close(&fil);                         /* Close the file */
+              while(1);
             }
+      if (! f_size(&fil)) {
+                int i;
+                fr = f_printf(&fil, "BMS INITIALIZ...........\n");
+                fr = f_printf(&fil, "Battery Initial Status:\n");
+                fr = f_printf(&fil, "Battery Pack Status\t\t\t\t\t\t\t\tSeries cell's Voltages\t\t\t\t\t\t\t\t\t\t\t\t\t\tSeries cell's SOC\t\t\t\t\t\t\t\t\t\t\t\t\t\tTemperature Sensors data\t\t\t\t\t\t\t\t\t\t\t Balancing Cell ID\n");
+
+                for(i = 0; i < noSCell; i++){
+                    f_printf(&fil,"%d\t\t",i+1);  //
+                     }
+
+               //   printf("Cell_SOC:\t");
+                  for(i = 0; i < noSCell; i++){
+                      f_printf(&fil,"%d\t\t",i+1);
+                     }
+
+               //   printf("Temp_Sensors:\t");
+                  for(i = 0; i < noTemp; i++){
+                      f_printf(&fil,"%d\t\t",i+1);
+                     }
+
+                  for(i = 0; i < noSCell; i++){
+                      f_printf(&fil,"%d\t",i+1);
+
+
+            //    f_printf("BMS INITIALIZ...........\n");
+            //    f_printf("Battery Initial Status:\n");
+            //    f_printf("Battery Pack Status\t\t\t\t\t\t\t\tSeries cell's Voltages\t\t\t\t\t\t\t\t\t\t\t\t\t\tSeries cell's SOC\t\t\t\t\t\t\t\t\t\t\t\t\t\tTemperature Sensors data\t\t\t\t\t\t\t\t\t\t\tBalancing Cell ID\n");
+                  }
+              if (fr <0) {
+                  /* Error. Cannot write header */
+                  while(1);
+              }
+            }
+
+      while(1){
+      //     fr = f_printf(&fil, "%08u;%08u;%08u\n", 1, 2, 3);
+           showdata4(c,vPack,iPack,zAvg,TempPack, PCap);
+
+         }
+           if (fr < FR_OK) {
+               /* Error. Cannot log data */
+               while(1);
+           }
+
+           /* Close the file */
+                fr = f_close(&fil);
+                if (fr != FR_OK)
+                {
+                  /* Error. Cannot close the file */
+                  while(1);
+                }
+
+
+
 
       while(1);
 

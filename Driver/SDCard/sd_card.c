@@ -816,6 +816,10 @@ SD_Test(void)
       // if file empty, write header
       if (! f_size(&fsrc)) {
           res = f_printf(&fsrc, "temperature;humidity;uv\n");
+      //    f_printf("BMS INITIALIZ...........\n");
+     //     f_printf("Battery Initial Status:\n");
+     //     f_printf("Battery Pack Status\t\t\t\t\t\t\t\tSeries cell's Voltages\t\t\t\t\t\t\t\t\t\t\t\t\t\tSeries cell's SOC\t\t\t\t\t\t\t\t\t\t\t\t\t\tTemperature Sensors data\t\t\t\t\t\t\t\t\t\t\tBalancing Cell ID\n");
+
         if (res <0) {
             /* Error. Cannot write header */
             while(1);
