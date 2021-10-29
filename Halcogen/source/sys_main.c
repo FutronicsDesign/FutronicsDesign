@@ -63,7 +63,18 @@
 #include "diskio.h"
 FATFS Fatfs;
 FIL fil;
+FRESULT res;
+FILINFO fno;
 
+#if _USE_LFN
+static char lfn[_MAX_LFN + 1];
+#endif
+
+
+#if _USE_LFN
+fno.lfname = lfn;
+fno.lfsize = sizeof(lfn);
+#endif
 /** @fn void main(void)
 *   @brief Application main function
 *   @note This function is empty by default.
@@ -127,6 +138,8 @@ int main(void)
 UINT bw;
 FRESULT fr;
 
+char filename[16]; // enough space for characters and terminating NUL
+
 
       sciInit(); // To Initalize LIN/SCI2 routines to receive commands and transmit data
       //  spiInit(); // Use it  in Fatfs port
@@ -151,10 +164,12 @@ FRESULT fr;
 
       f_mount(&Fatfs, "", 3);     /* Give a work area to the default drive */
 
+
+
       fr = f_open(&fil, "xyz.txt", FA_WRITE | FA_CREATE_ALWAYS);  /* Create a file */
       fr = open_append(&fil, "xyz.txt");
 
-
+      sprintf(fr, "%03d.txt", GetNextIndex("""") );
       if (fr != FR_OK) {
         //    f_write(&fil, "It works!\r\n", 11, &bw);    /* Write data to the file */
          //   fr = f_close(&fil);                         /* Close the file */
@@ -220,6 +235,39 @@ FRESULT fr;
 }
 
 
+int GetNextIndex(char *path)
+{
+DIR dir;
+FILINFO fno;
+int i, index = -1;
+if (f_opendir(&dir, path) == FR_OK)
+{
+while(1)
+{
+if ((f_readdir(&dir, &fno) != FR_OK) || (fno.fname[0] == 0))
+break;
+if ((strstr(fno.fname, "xyz.txt") != NULL) && (sscanf(fno.fname, "%d", &i) == 1))
+if (i > index) index = i;
+}
+}
+return(index + 1);
+}
+
+
+//void loop() {
+  // save new integer every loop and then wait 1s
+//    fr = f_open(&fil, "xyz.txt", FA_WRITE | FA_CREATE_ALWAYS);
+//    if (fr) {
+    // save a different number each loop
+//        f_printf(String(millis())+","+String(int_iter));
+//    testfile.close();
+//    Serial.println("Saving "+String(int_iter));
+//  } else {
+//    Serial.println("error opening file");
+//  }
+//  int_iter+=1;
+//  delay(1000);
+//}
 
 /* USER CODE BEGIN (4) */
 /* USER CODE END */
