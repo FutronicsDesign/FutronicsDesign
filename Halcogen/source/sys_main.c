@@ -165,14 +165,15 @@ char filename[16]; // enough space for characters and terminating NUL
       f_mount(&Fatfs, "", 3);     /* Give a work area to the default drive */
 
 
+      sprintf(fr, "xyz_%d.txt", GetNextIndex("") );
 
-      fr = f_open(&fil, "xyz.txt", FA_WRITE | FA_CREATE_ALWAYS);  /* Create a file */
+      fr = f_open(&fil,"%d \n", FA_WRITE | FA_CREATE_ALWAYS);  /* Create a file */
       fr = open_append(&fil, "xyz.txt");
 
-      sprintf(fr, "%03d.txt", GetNextIndex("""") );
+//      sprintf(fr, "%03d.txt", GetNextIndex("""") );
       if (fr != FR_OK) {
         //    f_write(&fil, "It works!\r\n", 11, &bw);    /* Write data to the file */
-         //   fr = f_close(&fil);                         /* Close the file */
+        //   fr = f_close(&fil);                         /* Close the file */
               while(1);
             }
       if (! f_size(&fil)) {
@@ -246,7 +247,7 @@ while(1)
 {
 if ((f_readdir(&dir, &fno) != FR_OK) || (fno.fname[0] == 0))
 break;
-if ((strstr(fno.fname, "xyz.txt") != NULL) && (sscanf(fno.fname, "%d", &i) == 1))
+if ((strstr(fno.fname, "sachin_%d.txt") != NULL) && (sscanf(fno.fname, "%d", &i) == 1))
 if (i > index) index = i;
 }
 }

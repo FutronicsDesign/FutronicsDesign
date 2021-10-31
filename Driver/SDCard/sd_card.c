@@ -807,7 +807,10 @@ SD_Test(void)
     FIL fsrc;                /* File objects */
 
       /* Open  the file for append */
+//      res = f_open(&fil, "xyz.txt", FA_WRITE | FA_CREATE_ALWAYS);  /* Create a file */
       res = open_append(&fsrc, TEST_FILENAME);
+
+
       if (res != FR_OK) {
           /* Error. Cannot create the file */
           while(1);
