@@ -167,8 +167,8 @@ char filename[16]; // enough space for characters and terminating NUL
 
       sprintf(fr, "xyz_%d.txt", GetNextIndex("") );
 
-      fr = f_open(&fil,"%d \n", FA_WRITE | FA_CREATE_ALWAYS);  /* Create a file */
-      fr = open_append(&fil, "xyz.txt");
+      fr = f_open(&fil,"xyz_%d.txt", FA_WRITE | FA_CREATE_ALWAYS);  /* Create a file */
+      fr = open_append(&fil, "xyz_%d.txt");
 
 //      sprintf(fr, "%03d.txt", GetNextIndex("""") );
       if (fr != FR_OK) {
@@ -211,7 +211,9 @@ char filename[16]; // enough space for characters and terminating NUL
             }
 
       while(1){
+
       //     fr = f_printf(&fil, "%08u;%08u;%08u\n", 1, 2, 3);
+          fr = open_append(&fil, "xyz_%d.txt");
            showdata4(c,vPack,iPack,zAvg,TempPack, PCap);
 
          }
@@ -231,7 +233,7 @@ char filename[16]; // enough space for characters and terminating NUL
 
 
 
-      while(1);
+     // while(1);
 
 }
 
@@ -247,7 +249,7 @@ while(1)
 {
 if ((f_readdir(&dir, &fno) != FR_OK) || (fno.fname[0] == 0))
 break;
-if ((strstr(fno.fname, "sachin_%d.txt") != NULL) && (sscanf(fno.fname, "%d", &i) == 1))
+if ((strstr(fno.fname, ".txt") != NULL) && (sscanf(fno.fname, "%d", &i) == 1))
 if (i > index) index = i;
 }
 }
