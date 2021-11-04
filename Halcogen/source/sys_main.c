@@ -198,7 +198,7 @@ char filename[16]; // enough space for characters and terminating NUL
  //     sprintf(fr, "xyz_%d.txt", GetNextIndex("") );
 
       fr = f_open(&fil,"xyz_%d.txt", FA_WRITE | FA_CREATE_ALWAYS);  /* Create a file */
-      fr = open_append(&fil, "xyz_%d.txt");
+      fr = open_append(&fil, "xyz.txt");
 
 //      sprintf(fr, "%03d.txt", GetNextIndex("""") );
       if (fr != FR_OK) {
@@ -244,7 +244,7 @@ char filename[16]; // enough space for characters and terminating NUL
       while(1){
 
       //     fr = f_printf(&fil, "%08u;%08u;%08u\n", 1, 2, 3);
-          fr = open_append(&fil, "xyz_%d.txt");
+          fr = open_append(&fil, "xyz.txt");
            showdata4(c,vPack,iPack,zAvg,TempPack, PCap);
 
          }
