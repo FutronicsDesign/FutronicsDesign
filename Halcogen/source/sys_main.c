@@ -66,7 +66,7 @@ FIL fil;
 FRESULT res;
 
 
-
+/////*code for set RTC timer //////
 
 FRESULT set_timestamp (
     char *obj,     /* Pointer to the file name */
