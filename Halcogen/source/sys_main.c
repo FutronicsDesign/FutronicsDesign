@@ -64,7 +64,29 @@
 FATFS Fatfs;
 FIL fil;
 FRESULT res;
-FILINFO fno;
+
+
+
+
+FRESULT set_timestamp (
+    char *obj,     /* Pointer to the file name */
+    int year,
+    int month,
+    int mday,
+    int hour,
+    int min,
+    int sec
+)
+{
+    FILINFO fno;
+
+    fno.fdate = (WORD)(((year - 1980) * 512U) | month * 32U | mday);
+    fno.ftime = (WORD)(hour * 2048U | min * 32U | sec / 2U);
+
+    return f_utime(obj, &fno);
+}
+
+
 
 #if _USE_LFN
 static char lfn[_MAX_LFN + 1];
@@ -95,6 +117,7 @@ struct cell{
     float z;
     float temp;
     float Capacity;
+    float timestamp;
 };
 struct cell c[8];
 
@@ -112,11 +135,18 @@ int SD_Test(void);
 /* USER CODE BEGIN (2) */
 /* USER CODE END */
 
+/****** function to change the timestamp ***********************/
+
+
 
 void showdata4(struct cell c[],float vPack, float iPack, float zAvg, float TempPack, float PCap){
                       int i;
+
+                  FRESULT timer = set_timestamp("", 2018, 9, 15, 1, 1, 1);
+
+
              //     printf("%f\t%f\t%f\t%f\t%f\t",zAvg*100,vPack,iPack,TempPack,PCap);
-                   f_printf(&fil,"%f\t%f\t%f\t%f\t",zAvg*100,vPack,iPack,TempPack);
+                   f_printf(&fil,"%f\t%f\t%f\t%f\t%f\t",(int)timer,zAvg*100,vPack,iPack,TempPack);
                 //   printf("\t");
                   for(i = 0; i < noSCell; i++){
                        f_printf(&fil,"%f\t",c[i].voltage);// c is structure voltage data
@@ -165,7 +195,7 @@ char filename[16]; // enough space for characters and terminating NUL
       f_mount(&Fatfs, "", 3);     /* Give a work area to the default drive */
 
 
-      sprintf(fr, "xyz_%d.txt", GetNextIndex("") );
+ //     sprintf(fr, "xyz_%d.txt", GetNextIndex("") );
 
       fr = f_open(&fil,"xyz_%d.txt", FA_WRITE | FA_CREATE_ALWAYS);  /* Create a file */
       fr = open_append(&fil, "xyz_%d.txt");
@@ -181,6 +211,7 @@ char filename[16]; // enough space for characters and terminating NUL
                 fr = f_printf(&fil, "BMS INITIALIZ...........\n");
                 fr = f_printf(&fil, "Battery Initial Status:\n");
                 fr = f_printf(&fil, "Battery Pack Status\t\t\t\t\t\t\t\tSeries cell's Voltages\t\t\t\t\t\t\t\t\t\t\t\t\t\tSeries cell's SOC\t\t\t\t\t\t\t\t\t\t\t\t\t\tTemperature Sensors data\t\t\t\t\t\t\t\t\t\t\t Balancing Cell ID\n");
+                fr = f_printf(&fil,"SoC\t\tTime\t\tVoltage\t\tCurrent\t\tTemperature\t\t");
 
                 for(i = 0; i < noSCell; i++){
                     f_printf(&fil,"%d\t\t",i+1);  //
@@ -237,7 +268,7 @@ char filename[16]; // enough space for characters and terminating NUL
 
 }
 
-
+/*****
 int GetNextIndex(char *path)
 {
 DIR dir;
@@ -249,14 +280,14 @@ while(1)
 {
 if ((f_readdir(&dir, &fno) != FR_OK) || (fno.fname[0] == 0))
 break;
-if ((strstr(fno.fname, ".txt") != NULL) && (sscanf(fno.fname, "%d", &i) == 1))
+if ((strstr(fno.fname, """.txt") != NULL) && (sscanf(fno.fname, "%d", &i) == 1))
 if (i > index) index = i;
 }
 }
 return(index + 1);
 }
 
-
+****?
 //void loop() {
   // save new integer every loop and then wait 1s
 //    fr = f_open(&fil, "xyz.txt", FA_WRITE | FA_CREATE_ALWAYS);

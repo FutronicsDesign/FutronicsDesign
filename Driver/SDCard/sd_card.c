@@ -19,7 +19,7 @@
 // DAMAGES, FOR ANY REASON WHATSOEVER.
 // 
 //*****************************************************************************
-#define TEST_FILENAME    "Futronics.TXT"
+#define TEST_FILENAME    "Futro.TXT"
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>

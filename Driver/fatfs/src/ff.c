@@ -5262,6 +5262,8 @@ FRESULT f_utime (
     LEAVE_FF(fs, res);
 }
 
+
+
 #endif  /* FF_USE_CHMOD && !FF_FS_READONLY */
 
 
@@ -6979,3 +6981,6 @@ FRESULT f_setcp (
     return FR_OK;
 }
 #endif  /* FF_CODE_PAGE == 0 */
+
+
+
